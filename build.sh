@@ -34,7 +34,7 @@ echo -e "\e[32mApp copied in the AppDir\e[39m"
 
 # build appimage
 cd ${workdir}
-./${appimgx} ${appdir} ${output}
+./${appimgx} -n ${appdir} ${output}
 echo -e "\e[32mCreated appimage file ${output}\e[39m"
 
 # cleaning
