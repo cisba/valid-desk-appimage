@@ -1,0 +1,14 @@
+#!/bin/sh
+
+SELF=$(readlink -f "$0")
+HERE=${SELF%/*}
+CLASSPATH="${HERE}/CSCSigner.jar"
+for l in libs/*.jar ; do
+    CLASSPATH="${CLASSPATH}:${HERE}/${l}"
+done
+export CLASSPATH
+export JARFILE="${HERE}/CSCSigner.jar"
+export JAVA_HOME="${HERE}/$(ls -d jre*)"
+export PATH="${JAVA_HOME}/bin/:${HERE}/${PATH:+:$PATH}"
+EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)
+exec "${EXEC}" "$@"
