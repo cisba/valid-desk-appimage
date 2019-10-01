@@ -33,6 +33,7 @@ cd ValidDesk-app.pkg/
 gunzip -c Payload | cpio -i >/dev/null
 cd ValidDesk.app/Contents/Java
 mv CSCSigner.jar libs ${appdir}
+echo ${osxfile} > ${appdir}/version
 echo -e "\e[32mExtracted ValidDesk app and libs from ${osxfile}\e[39m"
 
 # cleaning
