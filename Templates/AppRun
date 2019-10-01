@@ -8,7 +8,7 @@ for l in libs/*.jar ; do
 done
 export CLASSPATH
 export JARFILE="${HERE}/CSCSigner.jar"
-export JAVA_HOME="${HERE}/$(ls -1|grep -e '^jre[0-9.]*_[0-9]*$')"
+export JAVA_HOME="${HERE}/jre"
 export JAVACMD="${JAVA_HOME}/bin/java"
 export PATH="${JAVA_HOME}/bin/:${HERE}/${PATH:+:$PATH}"
 EXEC=$(grep -e '^Exec=.*' "${HERE}"/*.desktop | head -n 1 | cut -d "=" -f 2 | cut -d " " -f 1)

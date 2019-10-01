@@ -25,6 +25,9 @@ echo -e "\e[32mCreted AppDir ${appdir}\e[39m"
 
 # extract jre
 tar -C ${appdir} -xf ${workdir}/${javatgz}
+cd ${appdir} 
+jre="$(ls -1|grep -e '^jre[0-9.]*_[0-9]*$')"
+mv $jre jre
 echo -e "\e[32mExtracted JRE ${javatgz}\e[39m"
 
 # copy app
