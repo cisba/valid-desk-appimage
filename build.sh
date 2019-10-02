@@ -46,7 +46,7 @@ for arch in x86_64 i686 ; do
     # build appimage
     cd ${workdir}
     appimgx="appimagetool-${arch}.AppImage"
-    ./${appimgx} -n ${appdir} ${output}
+    ./${appimgx} "$@" -n ${appdir} ${output}
     echo -e "\e[32mCreated appimage file ${output}\e[39m"
 
     # cleaning
