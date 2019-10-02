@@ -8,13 +8,13 @@ else
 fi
 
 # sanity checks
-if ! [ -f ${osxfile} ] ; then 
+if ! [[ -f ${osxfile} ]] ; then
     echo -e "\e[31mERROR: file ${osxfile} not found\e[39m"
     exit 1
 fi
 if ! which xar >/dev/null ; then
     echo -e "\e[31mERROR: xar executable not found\e[39m"
-    exit 1    
+    exit 1
 fi
 echo -e "\e[32mSanity checks passed\e[39m"
 
