@@ -29,7 +29,7 @@ for arch in x86_64 i686 ; do
     # copy template files
     cd ${workdir}/Templates/
     cp AppRun ValidDesk ValidDesk.desktop ValidDesk.png ${appdir}
-    echo -e "\e[32mCreted AppDir ${appdir}\e[39m"
+    echo -e "\e[32mCreated AppDir ${appdir}\e[39m"
 
     # extract jre
     tar -C ${appdir} -xf ${workdir}/${javatgz}
@@ -51,6 +51,6 @@ for arch in x86_64 i686 ; do
 
     # cleaning
     rm -fr ${appdir}
-    echo -e "\e[32mCleaning done, exit.\e[39m"
+    echo -e "\e[32mAppDir removed.\e[39m"
 
 done
