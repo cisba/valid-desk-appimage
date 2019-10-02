@@ -5,42 +5,52 @@
 source build.conf
 
 # sanity checks
-[ -f ${javatgz} ] || exit 1
-[ -f ${appimgx} ] || exit 1
-[ -x ${appimgx} ] || chmod +x ${appimgx}
+[ -f ${jre32bit} ] || exit 1
+[ -f ${jre64bit} ] || exit 1
+[ -f appimagetool-i686.AppImage ] || exit 1
+[ -f appimagetool-x86_64.AppImage ] || exit 1
+[ -x appimagetool-i686.AppImage ] || chmod +x ${appimgx}
+[ -x appimagetool-x86_64.AppImage ] || chmod +x ${appimgx}
 [ -f app/CSCSigner.jar ] || exit 1
 ls app/libs/*.jar >/dev/null || exit 1
 echo -e "\e[32mSanity checks passed\e[39m"
 
-# create appdir
-workdir=$(pwd)
-appdir="${workdir}/ValidDesk-${version}-${arch}.AppDir"
-[ -d ${appdir} ] && rm -fr ${appdir}
-mkdir ${appdir}
+for arch in x86_64 i686 ; do
 
-# copy template files
-cd ${workdir}/Templates/
-cp AppRun ValidDesk ValidDesk.desktop ValidDesk.png ${appdir}
-echo -e "\e[32mCreted AppDir ${appdir}\e[39m"
+    [ "$arch" == "x86_64" ] && javatgz=jre-${jrever}-linux-x64.tar.gz 
+    [ "$arch" == "i686" ] && javatgz=jre-${jrever}-linux-i586.tar.gz
 
-# extract jre
-tar -C ${appdir} -xf ${workdir}/${javatgz}
-cd ${appdir} 
-jre="$(ls -1|grep -e '^jre[0-9.]*_[0-9]*$')"
-mv $jre jre
-echo -e "\e[32mExtracted JRE ${javatgz}\e[39m"
+    # create appdir
+    workdir=$(pwd)
+    appdir="${workdir}/ValidDesk-${version}-${arch}.AppDir"
+    [ -d ${appdir} ] && rm -fr ${appdir}
+    mkdir ${appdir}
 
-# copy app
-cd ${workdir}/app
-cp -r CSCSigner.jar libs ${appdir}
-echo -e "\e[32mApp copied in the AppDir\e[39m"
+    # copy template files
+    cd ${workdir}/Templates/
+    cp AppRun ValidDesk ValidDesk.desktop ValidDesk.png ${appdir}
+    echo -e "\e[32mCreted AppDir ${appdir}\e[39m"
 
-# build appimage
-cd ${workdir}
-./${appimgx} -n ${appdir} ${output}
-echo -e "\e[32mCreated appimage file ${output}\e[39m"
+    # extract jre
+    tar -C ${appdir} -xf ${workdir}/${javatgz}
+    cd ${appdir} 
+    jre="$(ls -1|grep -e '^jre[0-9.]*_[0-9]*$')"
+    mv $jre jre
+    echo -e "\e[32mExtracted JRE ${javatgz}\e[39m"
 
-# cleaning
-rm -fr ${appdir}
-echo -e "\e[32mCleaning done, exit.\e[39m"
+    # copy app
+    cd ${workdir}/app
+    cp -r CSCSigner.jar libs ${appdir}
+    echo -e "\e[32mApp copied in the AppDir\e[39m"
 
+    # build appimage
+    cd ${workdir}
+    appimgx="appimagetool-${arch}.AppImage"
+    ./${appimgx} -n ${appdir} ${output}
+    echo -e "\e[32mCreated appimage file ${output}\e[39m"
+
+    # cleaning
+    rm -fr ${appdir}
+    echo -e "\e[32mCleaning done, exit.\e[39m"
+
+done
