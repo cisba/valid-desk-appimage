@@ -18,6 +18,8 @@ Eseguire il comando `./build.sh` che genera i pacchetti AppImage
 
 Eseguire il comando `./hash-sign.sh` che crea la cartella `out_<version>` con tutti i pacchetti, i file sha256 e le firme
 
+Copiare via ftp la directory `out_<version>` e il file `current`
+
 ### Note
 
 1. per produrre il pacchetto 32bit-i686 su una piattaforma 64bit-x86_64 è necessario installare alcune librerie 32bit; ad esempio su Ubuntu eseguire `sudo apt install libc6:i386 zlib1g:i386 libfuse2:i386 libgcc1:i386` mentre su CentOS7 eseguire `sudo yum install glibc.i686 zlib.i686 fuse-libs.i686 libgcc.i686`
