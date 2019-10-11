@@ -1,0 +1,8 @@
+*.deb
+*.rpm
+*.exe
+*.pkg
+*.AppImage
+jre*.tar.gz
+app/
+out-*/
