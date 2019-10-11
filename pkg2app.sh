@@ -1,42 +1,42 @@
 #!/bin/bash
 
-# get parameters
-if [ -z "$1" ] ; then
-    echo "Usage: $0 <OS X Valid-Desk package file>"
-else
-    osxfile=$1
+# check osx pkg
+[ -f "$1" ] || exit 1
+osxpkg="$1"
+
+# check or setup venv
+which python3 || exit 1
+if ! which pip3 >/dev/null 2>&1 ; then
+    if [ ! -f .venv/bin/activate ] ; then
+        python3 -m venv .venv || exit 1
+    fi
 fi
 
-# sanity checks
-if ! [[ -f ${osxfile} ]] ; then
-    echo -e "\e[31mERROR: file ${osxfile} not found\e[39m"
-    exit 1
+source .venv/bin/activate || exit 1
+pip3 install --upgrade pip || exit 1
+
+
+if ! pip3 show libarchive >/dev/null ; then
+    pip3 install libarchive-c || exit 1
 fi
-if ! which xar >/dev/null ; then
-    echo -e "\e[31mERROR: xar executable not found\e[39m"
-    exit 1
-fi
-echo -e "\e[32mSanity checks passed\e[39m"
 
-# create app directory
-workdir=$(pwd)
-appdir=${workdir}/app
-[ -d ${appdir} ] && rm -fr ${appdir}
-mkdir ${appdir}
+# extract
+workdir="$(pwd)"
+extractdir=app_extract
+rm -fr ${workdir}/${extractdir}
+mkdir ${extractdir} || exit 1
+cd ${extractdir} || exit 1
+python3 ../extract.py ../${osxpkg} || exit 1
+cd ValidDesk-app.pkg || exit 1
+gunzip -c Payload | cpio -i || exit 1
+rm -fr ${workdir}/app || exit 1
+mv ValidDesk.app/Contents/Java ${workdir}/app || exit 1
 
-# extract app from osx file
-[ -d osx-pkg ] && rm -fr osx-pkg
-mkdir -p osx-pkg
-cd osx-pkg
-xar -xvf ${workdir}/${osxfile} >/dev/null
-cd ValidDesk-app.pkg/
-gunzip -c Payload | cpio -i >/dev/null
-cd ValidDesk.app/Contents/Java
-mv CSCSigner.jar libs ${appdir}
-echo ${osxfile} > ${appdir}/version
-echo -e "\e[32mExtracted ValidDesk app and libs from ${osxfile}\e[39m"
+# get app and jre version
+version="$(echo ${osxpkg} | sed 's/^ValidDesk-//'|sed 's/.pkg$//')"
+jrever="$(grep -A 1 BundleVersion ValidDesk.app/Contents/PlugIns/Java.runtime/Contents/Info.plist | grep string | sed 's/[ ]*<[\/]*string>//g')"
+echo "version=${version}" > ${workdir}/app/versions
+echo "jrever=${jrever}" >> ${workdir}/app/versions
 
-# cleaning
-rm -fr ${workdir}/osx-pkg
-echo -e "\e[32mCleaning done, exit.\e[39m"
-
+# show versions
+cat ${workdir}/app/versions

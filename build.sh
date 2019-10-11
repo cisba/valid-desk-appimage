@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # get parameters
-[ -f build.conf ] || exit 1
-source build.conf
+[ -f app/versions ] || exit 1
+source app/versions
 
 # sanity checks
 [ -f ${jre32bit} ] || exit 1
