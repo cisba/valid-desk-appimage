@@ -13,16 +13,11 @@ source build.conf
 [ -x appimagetool-x86_64.AppImage ] || chmod +x ${appimgx}
 [ -f app/CSCSigner.jar ] || exit 1
 ls app/libs/*.jar >/dev/null || exit 1
-if [[ "$1" == "--sign" ]] ; then
-    [ -z "$(gpg -K)" ] && exit 1
-fi
+# FIXME: check version of valid-desk and jre
 echo -e "\e[32mSanity checks passed\e[39m"
 
-# create output dir
+# save workdir path
 workdir=$(pwd)
-outputdir="${workdir}/out-${version}"
-[ -d ${outputdir} ] && rm -fr ${outputdir}
-mkdir ${outputdir} || exit 1
 
 # do the job for each type of cpu
 for arch in x86_64 i686 ; do
@@ -57,21 +52,8 @@ for arch in x86_64 i686 ; do
     cd ${workdir} || exit 1
     output="${appname}.AppImage"
     appimgx="appimagetool-${arch}.AppImage"
-    options="-n $1"
-    ./${appimgx} ${options} -n ${appdir} ${outputdir}/${output} || exit 1
+    ./${appimgx} -n ${appdir} ${output} || exit 1
     echo -e "\e[32mCreated appimage file ${output}\e[39m"
-
-    # checksums
-    cd ${outputdir} || exit 1
-    sha256sum ${output} > ${output}.sha256sum || exit 1
-    sha512sum ${output} > ${output}.sha512sum || exit 1
-
-    # signing
-    if [[ "$1" == "--sign" ]] ; then
-        gpg -s -b ${output} || exit 1
-        gpg -s -b -a ${output} || exit 1
-        echo -e "\e[32mCreated appimage file ${output}\e[39m"
-    fi
 
     # cleaning
     cd ${workdir} || exit 1
