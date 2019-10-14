@@ -15,15 +15,19 @@ source app/versions
 
 # check packages exist
 versionrpm="$(echo ${version}|sed 's/_/-/')"
-filelist1="$(ls ValidDesk-${version}{.exe,.pkg,-{i686,x86_64}.AppImage})"
-filelist2="validdesk-${version}.deb validdesk-${versionrpm}.x86_64.rpm"
-filelist="${filelist1} ${filelist2}"
+filelist="$(ls *-${version}*{exe,pkg,deb,{x86_64,i686}.AppImage})"
+ret=$?
+filelist="$filelist $(ls *-${versionrpm}*rpm)"
+ret=$(( $? + ret ))
+if (( ret > 0 )) ; then
+    read -p "some file not found, continue anyway? (yes/no): " response
+    [ "${response}" == "yes" ] || exit 1
+fi
 for file in ${filelist} ; do
-    if ! [ -f ${file} ] ; then
-        echo "ERROR: file ${file} not present"
-        exit 1
-    fi
+    echo ${file}
 done
+read -p "File list complete. Confirm? (yes/no): " response
+[ "${response}" == "yes" ] || exit 1
 
 # move packages in outdir
 mkdir "out-${version}" || exit 1

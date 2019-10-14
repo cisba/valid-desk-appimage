@@ -33,7 +33,7 @@ rm -fr ${workdir}/app || exit 1
 mv ValidDesk.app/Contents/Java ${workdir}/app || exit 1
 
 # get app and jre version
-version="$(echo ${osxpkg} | sed 's/^ValidDesk-//'|sed 's/.pkg$//')"
+version="$(echo ${osxpkg} | sed 's/^.*ValidDesk-//'|sed 's/.pkg$//')"
 jrever="$(grep -A 1 BundleVersion ValidDesk.app/Contents/PlugIns/Java.runtime/Contents/Info.plist | grep string | sed 's/[ ]*<[\/]*string>//g')"
 echo "version=${version}" > ${workdir}/app/versions
 echo "jrever=${jrever}" >> ${workdir}/app/versions
