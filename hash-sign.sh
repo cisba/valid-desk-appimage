@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # get parameters
 if ! [ -f app/versions ] ; then
     echo "ERROR: file app/versions not present"
@@ -9,15 +11,12 @@ source app/versions
 [ -z "$(gpg -K)" ] && exit 1
 # FIXME: check publication on keyserver
 # FIXME: select key from keyring (?)
+# FIXME: add public key copy to ftp directory (?)
 
 # check packages exist
 versionrpm="$(echo ${version}|sed 's/_/-/')"
-if [ -f validdesk-${versionrpm}.x86_64.rpm ] ; then
-    mv validdesk-${versionrpm}.x86_64.rpm validdesk-${version}.x86_64.rpm
-fi
 filelist1="$(ls ValidDesk-${version}{.exe,.pkg,-{i686,x86_64}.AppImage})"
-#filelist1="$(ls ValidDesk-${version}{.exe,.pkg,-i686.AppImage,-x86_64.AppImage})"
-filelist2="validdesk-${version}.deb validdesk-${version}.x86_64.rpm"
+filelist2="validdesk-${version}.deb validdesk-${versionrpm}.x86_64.rpm"
 filelist="${filelist1} ${filelist2}"
 for file in ${filelist} ; do
     if ! [ -f ${file} ] ; then
@@ -41,4 +40,3 @@ done
 
 echo ${version} > current
 
-# FIXME: add public key copy to directory (?)

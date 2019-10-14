@@ -18,7 +18,13 @@ Eseguire il comando `./build.sh` che genera i pacchetti AppImage
 
 Eseguire il comando `./hash-sign.sh` che crea la cartella `out_<version>` con tutti i pacchetti, i file sha256 e le firme
 
-Copiare via ftp la directory `out_<version>` e il file `current`
+Aggiornare il file `current.json`
+
+Copiare via ftp il contenuto della directory `out_<version>` in `/pub`
+e il file `current.json` in radice.
+
+Verificare che il file `current.json` sia coerente con i file copiati
+eseguendo il comando `python3 valildate-current.sh`
 
 ### Note
 

@@ -1,0 +1,27 @@
+{
+  "windows": {
+    "ver": "1.0_290",
+    "file": "pub/ValidDesk-1.0_290.exe"
+    },
+  "macosx": {
+    "ver": "1.0_290",
+    "file": "pub/ValidDesk-1.0_290.pkg"
+    },
+  "ubuntu": {
+    "ver": "1.0_290",
+    "file": "pub/validdesk-1.0_290.deb"
+    },
+  "redhat": {
+    "ver": "1.0-290",
+    "file": "pub/validdesk-1.0-290.x86_64.rpm"
+    },
+  "linux64": {
+    "ver": "1.0_290",
+    "file": "pub/ValidDesk-1.0_290-x86_64.AppImage"
+    },
+  "linux32": {
+    "ver": "1.0_290",
+    "file": "pub/ValidDesk-1.0_290-i686.AppImage"
+    }
+}
+
