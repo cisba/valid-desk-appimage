@@ -2,13 +2,15 @@
 import requests
 import simplejson as json
 
-
-with open('current.json') as json_file:
-    data = json.load(json_file)
+baseuri = 'https://www.intesigroup.com/wp-content/apps/'
+current = baseuri + 'current.json'
+response = requests.get(current)
+if not response:
+    print("Error reading %s" % current)
+else:
+    data = response.json()
     for os in data.keys():
-#pathname = "pub/ValidDesk-1.0_290.exe"
         pathname = data[os]['file']
-        baseuri = 'https://www.intesigroup.com/wp-content/apps/'
         uri = baseuri + pathname
         response = requests.head(uri)
         if not response:
