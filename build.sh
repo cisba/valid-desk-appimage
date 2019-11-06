@@ -22,8 +22,14 @@ workdir=$(pwd)
 # do the job for each type of cpu
 for arch in x86_64 i686 ; do
 
-    [ "$arch" == "x86_64" ] && javatgz=jre-${jrever}-linux-x64.tar.gz 
-    [ "$arch" == "i686" ] && javatgz=jre-${jrever}-linux-i586.tar.gz
+    IFS="_"
+    read -ra ADDR1 <<< "${jrever}"
+    IFS="."
+    read -ra ADDR2 <<< "${ADDR1[0]}"
+    unset IFS
+    jretgzver="${ADDR2[1]}u${ADDR1[1]}"
+    [ "$arch" == "x86_64" ] && javatgz=jre-${jretgzver}-linux-x64.tar.gz
+    [ "$arch" == "i686" ] && javatgz=jre-${jretgzver}-linux-i586.tar.gz
     appname="ValidDesk-${version}-${arch}"
 
     # create appdir

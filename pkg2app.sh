@@ -31,6 +31,8 @@ cd ValidDesk-app.pkg || exit 1
 gunzip -c Payload | cpio -i || exit 1
 rm -fr ${workdir}/app || exit 1
 mv ValidDesk.app/Contents/Java ${workdir}/app || exit 1
+cd ${workdir}
+rm -fr ${workdir}/${extractdir}
 
 # get app and jre version
 version="$(echo ${osxpkg} | sed 's/^.*ValidDesk-//'|sed 's/.pkg$//')"
