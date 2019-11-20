@@ -42,5 +42,5 @@ for file in ${filelist} ; do
     gpg -s -b -a ${file} || exit 1
 done
 
-echo ${version} > current
+#echo ${version} > current
 
